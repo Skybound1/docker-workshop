@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
+    <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
+    <title>Docker 101</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Sans:regular,700);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Sans';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.4em; }
+      .remark-slide-content {
+        padding: 0px;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line { font-size: 1.4em; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 1.4em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 25%;
+        height: 92%;
+        float: left;
+        background-color: rgb(39, 40, 34);
+        padding: 20px;
+        box-sizing: border-box;
+        height: 100vh;
+      }
+        .left-column h3 {
+          padding-left: 10px;
+        }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #f3f3f3;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+        padding: 20px;
+        box-sizing: border-box;
+        height: 100vh;
+        font-size: 1.4em;
+      }
+      
+      .alert {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        border-radius: 5px;
+        padding: 5px;
+        font-family: 'Ubuntu Mono';
+      }
+      .alert p {
+        margin: 0px;
+      }
+
+      .center {
+        text-align:center;
+      }
+
+      .info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+        border-color: #f5c6cb;
+        border-radius: 5px;
+        padding: 5px;
+        font-family: 'Ubuntu Mono';
+      }
+      .info p {
+        margin: 0px;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: auto;
+      }
+
+      table, th, td {
+        padding: 10px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+name: inverse
+layout: true
+class: center, middle, inverse
+---
+
+# Docker 101
+Alexandre Kaskasoli and Mohit Gupta
+
+---
+
+# Housekeeping
+---
+
+layout: false
+.left-column[
+    ## Housekeeping
+### - Motivation
+]
+.right-column[
+* We like Docker
+
+* Productivity increase
+
+* "Don't be afraid"
+
+* Little to it for basic usage
+]
+
+---
+
+.left-column[
+    ## Housekeeping
+### - Motivation
+### - Credits
+]
+.right-column[
+
+https://container.training/
+
+* Lots of good resources
+
+* Inspiration for this workshop
+
+* Take things a step further
+]
+
+---
+
+.left-column[
+    ## Housekeeping
+### - Motivation
+### - Credits
+### - Agenda
+]
+.right-column[
+
+* Why Docker
+
+* Images and Containers
+
+* Docker commands
+
+* Dockerfile
+
+* Docker Compose
+
+* Docker Machine
+
+* Docker Swarm
+
+* Security
+]
+
+---
+
+.left-column[
+    ## Housekeeping
+### - Motivation
+### - Credits
+### - Agenda
+### - Exercises
+]
+.right-column[
+.center[
+https://github.com/Skybound1/docker-workshop-exercises
+]
+]
+
+
+---
+template: inverse
+# Install Docker
+---
+
+layout: false
+.left-column[
+    ## Install Docker
+### - Windows
+]
+.right-column[
+
+You're on your own
+
+]
+
+---
+
+.left-column[
+    ## Install Docker
+### - Windows
+### - Linux
+]
+.right-column[
+Most distros will have an antiquated version of Docker, avoid it;
+
+Grab it fresh from Docker repos:
+
+* https://docs.docker.com/engine/installation/#server
+
+* (or Google: `install Docker CE $YOUR_DISTRO`)
+
+* Then
+    - `pip install docker-compose`
+]
+
+---
+
+.left-column[
+    ## Install Docker
+### - Windows
+### - Linux
+### - docker Group
+]
+.right-column[
+* Docker daemon binds to a Unix socket owned by `root`
+
+* `docker` CLI needs access to that socket
+
+* Privs++
+]
+
+---
+
+.left-column[   
+    ## Install Docker
+### - Windows
+### - Linux
+### - docker Group
+]
+.right-column[
+Two options:
+
+* Prefix all commands by `sudo`
+
+* Or add your user to the `docker` group:
+
+```
+$ sudo groupadd docker
+$ sudo usermod -aG docker user
+# log out and log back in
+```
+
+.alert[
+Consider members of the `docker` group `root` (when daemon running)
+]
+]
+
+---
+
+.left-column[
+    ## Install Docker
+### - Windows
+### - Linux
+### - docker Group
+### - Verify
+]
+.right-column[
+Check everything works:
+
+```
+$ docker run hello-world
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+]
+
+
+---
+template: inverse
+# Why Docker?
+---
+
+layout: false
+.left-column[
+    ## Why Docker?
+### - Old Problems
+]
+.right-column[
+
+* Companies use diff. stacks
+
+* Teams within companies use diff. stacks
+
+* Clients have diff. environments
+]
+
+---
+
+layout: false
+.left-column[
+    ## Why Docker?
+### - Old Problems
+### - Legacy Deployments
+]
+.right-column[
+
+* Code worked on developer's MacBook
+
+* Broke on Linux servers
+
+* Other users can't get it working
+
+* Dependencies need to be re-installed
+
+* Spin up databases and configure services
+
+_Repeat for each ENV_
+]
+
+---
+
+.left-column[
+    ## Why Docker?
+### - Old Problems
+### - Legacy Deployments
+### - Shipping Containers
+]
+.right-column[
+
+Problems solved in other industries:
+
+* Lingo from transport industry
+
+* Standard container size in transport industry
+
+* Same "box" can be loaded on ships, trains or trucks
+]
+
+---
+
+.left-column[
+    ## Why Docker?
+### - Old Problems
+### - Legacy Deployments
+### - Shipping Containers
+### - Containers for Apps
+]
+.right-column[
+Solution: containers
+
+* Docker containers are _portable app packages_:
+
+    - Works on your Dev's MacBook
+
+    - Works on your Linux servers
+
+    - Works for your users
+
+    - Dependencies are packaged into the containers
+
+```
+$ git clone tool
+$ docker-compose up
+# you're done
+```
+]
+
+---
+
+.left-column[
+    ## Why Docker?
+### - Old Problems
+### - Legacy Deployments
+### - Shipping Containers
+### - Containers for Apps
+### - Container TL;DR
+]
+.right-column[
+**TL;DR**
+
+.center[
+_Containers are file systems sharing your Kernel_
+]
+
+.info[
+    Windows/MacOS - Linux containers run in a Linux VM
+]
+]
+
+
+---
+template: inverse
+# Basics
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+]
+.right-column[
+
+* An **image** is an inert file system used to spin up containers
+
+* **Containers** are live systems built from images.
+
+| Analogies | Image | Container |
+| --------- | ----- | --------- |
+| Manufacturing | Blueprint | Thing |
+| Programming | Class | Instance |
+| Virtualization | ISO | VMs |
+
+
+* one image → many containers
+
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+]
+.right-column[
+
+* Searching Dockerhub for `alpine` Linux and pulling
+
+```
+$ docker search alpine
+NAME                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+alpine                                 A minimal Docker image based on Alpine Linux…   3024                [OK]
+
+$ docker image pull alpine
+```
+
+.alert[
+Anyone can put images on Docker Hub;
+use "official repositories"
+]
+
+* Listing images
+
+```
+$ docker image ls | grep alpine
+alpine                                          latest              3fd9065eaf02        9 days ago          4.15MB
+```
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+]
+.right-column[
+* Create and run a container with our `alpine` image:
+
+```
+$ docker run alpine echo hello world
+hello world
+```
+
+* Cool. Now list our containers:
+
+```
+$ docker ps -a | grep alpine
+b39ab8fbb3d0        alpine                                                "echo hello world"       20 seconds ago      Exited (0) 19 seconds ago                                objective_davinci
+```
+.info[
+-a, --all : list all
+]
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+]
+.right-column[
+* Run it again:
+
+```
+$ docker run alpine echo hello world
+hello world
+
+$ docker ps -a | grep alpine
+b39ab8fbb3d0        alpine                                                "echo hello world"       20 seconds ago      Exited (0) 19 seconds ago                                objective_davinci
+2324b1d5b9d2        alpine                                                "echo hello world"       38 seconds ago      Exited (0) 37 seconds ago                                ecstatic_poitras
+```
+
+* Why do we have two containers?
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+]
+.right-column[
+
+* Containers *are* re-usable
+
+* but they are *single function*
+
+* Inspect container:
+
+```
+$ docker inspect f76f4a6fe596
+[
+    {
+        "Id": "f76f4a6fe59653e88bee318493009ba87a5b77ca0cae5a13d78067be8f6eeb51",
+        "Created": "2018-01-17T15:09:40.222945023Z",
+        "Path": "echo",
+        "Args": [
+            "hello",
+            "world"
+        ],
+...
+]
+```
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+]
+.right-column[
+
+* When re-used, does the same thing:
+
+```
+$ docker start -a f76f4a6fe596
+hello world
+```
+
+.info[
+-a, --attach : attach STDOUT/STDERR
+]
+
+To do something else, build new container
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+]
+.right-column[
+
+.center[
+    **Quick Recap**
+]
+
+* `docker search` searches for images
+
+* `docker image pull` downloads image
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+]
+.right-column[
+
+.center[
+    **Quick Recap**
+]
+* `docker run` creates a new container and runs it
+
+* `docker start` re-runs a container
+
+* `docker ps` lists containers
+
+* `docker inspect` shows container info
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+]
+.right-column[
+
+.center[
+    **Quick Recap**
+]
+.info[
+**tip**
+* commands that act on _images_ usually start with `docker image`
+
+* commands that act on _containers_ usually just start with `docker`
+]
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+### - Cleaning Up
+]
+.right-column[
+* List our images
+
+```
+$ docker image ls
+alpine                                         latest              f9b6f7f7b9d3        42 hours ago        1.14MB
+```
+
+* Try to delete
+
+```
+$ docker image rm alpine
+Error response from daemon: conflict: unable to remove repository reference "alpine" (must force) - container 92e35b1165e1 is using its referenced image f9b6f7f7b9d3
+```
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+### - Cleaning Up
+]
+.right-column[
+* List containers:
+
+```
+$ docker ps -a
+f76f4a6fe596        alpine                                               "echo hello world"         About an hour ago   Exited (0) About an hour ago                       tender_ramanujan
+92e35b1165e1        alpine                                               "echo hello world"         About an hour ago   Exited (0) About an hour ago                       loving_tereshkova
+```
+
+.alert[
+Can't delete an image referenced by containers
+]
+
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+### - Cleaning Up
+]
+.right-column[
+* Delete our containers:
+
+```
+$ docker ps -aq | xargs docker rm
+f76f4a6fe596
+92e35b1165e1
+```
+
+.info[
+-q, --quiet : only list container IDs
+]
+
+* Now you can delete image:
+
+```
+$ docker image rm alpine
+Untagged: alpine:latest
+Untagged: alpine@sha256:ac2fc418f3348815e68e266a5aa1b60bc522581c96964912560a0baacc4f5c06
+Deleted: sha256:f9b6f7f7b9d34113f66e16a9da3e921a580937aec98da344b852ca540aaa2242
+Deleted: sha256:779f37a09c897c0406eb0a9fdc3a3eb47f973b03049d215ef7d5cede7c8f24d8
+```
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+### - Cleaning Up
+### - Naming
+]
+.right-column[
+
+* We used container IDs to refer to our containers
+
+* We can give them names instead
+
+```
+$ docker run --name my-container alpine echo hello world
+```
+
+.info[
+--name : container name
+]
+
+```
+$ docker inspect my-container
+$ docker rm my-container
+```
+]
+
+---
+
+.left-column[
+    ## Basics
+### - Images and Containers
+### - Getting Images
+### - First Container
+### - Container re-use
+### - Quick Recap
+### - Cleaning Up
+### - Naming
+### - Exercises
+]
+.right-column[
+
+.center[
+**Exercises**
+
+.center[
+https://github.com/Skybound1/docker-workshop-exercises
+]
+
+]
+
+]
+
+
+---
+template: inverse
+# Checking Inside
+
+---
+
+.left-column[
+    ## Checking Inside
+### - Host System
+]
+.right-column[
+* Check out our _host_ distribution:
+
+```
+$ cat /etc/lsb-release 
+LSB_VERSION=1.4
+DISTRIB_ID=Arch
+DISTRIB_RELEASE=rolling
+DISTRIB_DESCRIPTION="Arch Linux"
+```
+
+* and _host_ kernel:
+
+```
+$ uname -ar
+Linux system0 4.14.12-1-ARCH #1 SMP PREEMPT Fri Jan 5 18:19:34 UTC 2018 x86_64 GNU/Linux
+```
+]
+
+---
+
+.left-column[
+    ## Checking Inside
+### - Host System
+### - Container System
+]
+.right-column[
+* Same for a Ubuntu container:
+
+```
+$ docker search ubuntu
+$ docker pull ubuntu
+```
+
+* Create container and get shell in it:
+
+```
+$ docker run -it ubuntu /bin/bash
+root@e650364a5a65:/# 
+```
+
+.info[
+-i, --interactive : redirect STDIN
+
+-t, --tty : pseudo-terminal
+]
+]
+
+---
+
+.left-column[
+    ## Checking Inside
+### - Host System
+### - Container System
+]
+.right-column[
+* _Container_ distribution:
+
+```
+root@53d9dbca684a:/# cat /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.3 LTS"
+```
+
+* "_Container_ kernel":
+
+```
+root@53d9dbca684a:/# uname -ar
+Linux 53d9dbca684a 4.14.12-1-ARCH #1 SMP PREEMPT Fri Jan 5 18:19:34 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+.info[
+Container is running a **Ubuntu file system**
+
+has **Ubuntu binaries** and the **Ubuntu repos**
+
+**_but is using the host's kernel_**
+]
+]
+
+---
+
+.left-column[
+    ## Checking Inside
+### - Host System
+### - Container System
+### - Gotcha
+]
+.right-column[
+* Ubuntu usually ships with `python`, but:
+
+```
+root@53d9dbca684a:/# python
+bash: python: command not found
+```
+
+* Docker images are minimalist
+
+* Shipped with the bare essentials:
+
+```
+root@53d9dbca684a:/# dpkg -l | wc -l
+101
+```
+]
+
+---
+
+.left-column[
+    ## Checking Inside
+### - Host System
+### - Container System
+### - Gotcha
+### - Exercises
+]
+.right-column[
+
+.center[
+**Exercises**
+]
+
+]
+
+
+---
+template: inverse
+# Services
+---
+
+.left-column[
+    ## Services
+### - Small Web
+]
+.right-column[
+* `small-web` runs a simple HTTP server _in a container_.
+
+```
+$ docker pull sheeplepie/small-web
+```
+
+* Running it and listing ports:
+
+```
+$ docker run sheeplepie/small-web
+$ sudo netstat -tulpn
+...
+```
+
+* No listening port?
+
+.info[
+Ports exposed in your containers are not automatically exposed on your host.
+]
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+]
+.right-column[
+
+* Can't change port mappings on an existing container
+
+* Need to create a new container
+
+```
+$ docker run -d -p 127.0.0.1:8000:80 sheeplepie/small-web
+$ curl localhost:8000
+Congrats, your container is working
+```
+
+.info[
+-d, --detach : detach
+
+-p, --publish 127.0.0.1:8000:80 : map port 80 in your container to localhost:8000
+]
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+]
+.right-column[
+* Inspect port mappings
+
+```
+$ docker inspect $(docker ps -ql)
+...
+"Ports": {
+    "80/tcp": [
+        {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8000"
+        }
+    ]
+}...
+```
+
+.info[
+-l, --latest : last container
+]
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+]
+.right-column[
+
+* Previous container was detached
+
+* Can still check the logs with `docker logs`:
+
+```
+$ docker logs --tail 5 -f $(docker ps -ql)
+* Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+172.17.0.1 - - [18/Jan/2018 10:03:58] "GET / HTTP/1.1" 200 -
+```
+
+.info[
+--tail : only show last X logs
+
+-f, --follow : watch the logs as they come out
+]
+]
+
+---
+
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+### - Process
+]
+.right-column[
+#### Sidetrack
+
+* `small-web` is written in Python
+
+* `python` process is running "in" the container.
+
+.alert[
+_but containers are not VMs_
+]
+
+* The `python` process is running directly on the host:
+
+```
+$ ps aux | grep python
+user       377  0.0  0.0  10884  2260 pts/3    S+   22:22   0:00 grep --color=auto python
+root     17091  0.0  0.1  93188 22080 ?        Ss   20:38   0:01 python3 /app/app.py
+```
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+### - Process
+### - Exec
+]
+.right-column[
+
+* Exec commands on a running container with `docker exec`:
+
+```
+$ docker exec -it $(docker ps -ql) echo hello world
+hello world
+```
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+### - Process
+### - Exec
+### - Gotcha
+]
+.right-column[
+
+.info[
+**Caution** Containers can talk to eachother even if their services are not exposed on the host.
+]
+
+```
+$ docker run -d sheeplepie/small-web
+$ docker run -it alpine /bin/sh
+/ # apk update; apk add curl
+/ # curl 172.17.0.2
+Congrats, your container is working
+```
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+### - Process
+### - Exec
+### - Gotcha
+]
+.right-column[
+**TL;DR**
+
+.center[
+By default containers are all connected to the Docker "bridge" network and can talk to each other.
+]
+
+* You can change this with the `--network` flag
+]
+
+---
+
+.left-column[
+    ## Services
+### - Small Web
+### - Logs
+### - Process
+### - Exec
+### - Gotcha
+### - Exercises
+]
+.right-column[
+.center[
+**Exercises**
+]
+]
+
+
+---
+template: inverse
+# Storage
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+]
+.right-column[
+* Containers are closed file-systems
+
+* In a stopped container, data persists
+
+* but not in an easily accessible way from outside the container
+]
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+]
+.right-column[
+* Can mount directories in containers:
+
+```
+$ mkdir /tmp/database
+$ docker run -v /tmp/database:/data/db -d -p 127.0.0.1:27017:27017 mongo
+```
+
+.info[
+-v, --volume : host/path:container/path
+]
+]
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+### - Named Volumes
+]
+.right-column[
+* _Named volumes_ work like volumes
+
+* Instead of specifying a path on the host, just use a _name_
+
+```
+$ docker run -v my-named-volume:/data/db -d -p 127.0.0.1:27017:27017 mongo
+$ docker volume ls
+local               my-named-volume
+$ docker volume inspect my-named-volume 
+[
+    {
+        "CreatedAt": "2018-01-19T10:25:53Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/my-named-volume/_data",
+        "Name": "my-named-volume",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+```
+]
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+### - Named Volumes
+### - Copying
+]
+.right-column[
+* If you forgot volume or want to copy an arbitrary file:
+
+```
+$ docker cp $(docker ps -ql):/data/db /tmp/db
+```
+
+.info[
+container_id:/from/container/path /to/host/path
+]
+
+.info[
+works in both directions, like `scp`
+]
+]
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+### - Named Volumes
+### - Copying
+### - Pro-tip
+]
+.right-column[
+**Pro-tip**
+Browse a running container by going to `/proc/pid/root/`:
+
+```
+$ sudo bash
+# cd /proc/$(docker inspect --format {{.State.Pid}} `docker ps -ql`)/root
+# pwd
+/proc/13874/root/
+```
+]
+
+---
+
+.left-column[
+    ## Storage
+### - Mounting
+### - Named Volumes
+### - Copying
+### - Pro-tip
+### - Exercises
+]
+.right-column[
+
+.center[
+**Exercises**
+]
+]
+
+
+---
+template: inverse
+# Building Images
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+]
+.right-column[
+* `Dockerfile`s define, among other things:
+
+    - what the image contains (filesystem)
+
+    - things the image does on build
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+]
+.right-column[
+* Docker images are made of layers of Dockerfiles
+
+* `python`'s Alpine image looks like this:
+
+```
+| python3.7-rc-alpine |
+| alpine              |
+| scratch             |
+```
+
+* `scratch` is ... nothing
+
+* `alpine` Dockerfile is surpisingly simple.
+
+* `python` Dockerfile is a bit more complex.
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+* Demo: building a Dockerfile for `small-web`
+
+```
+git clone https://github.com/sheeplepie/small-web.git
+```
+
+* Create a file called Dockerfile in that directory
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+* Start from `alpine` base image
+
+```
+FROM alpine:3.6
+```
+
+* Get a copy of `app/` files in image 
+
+```
+COPY app/ /app/
+```
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+* Check it out
+
+```
+$ docker image build -t my-web .
+```
+
+.info[
+-t, --tag : give our image a name
+]
+
+* Run container to check files are there:
+
+```
+$ docker run -it my-web /bin/sh
+/ # ls -l app/
+total 8
+-rw-r--r--    1 root     root           161 Jan 17 23:15 app.py
+-rw-r--r--    1 root     root            14 Jan 17 22:22 requirements.txt
+```
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+
+* Get Python and some modules:
+
+```
+RUN apk update
+RUN apk add python3
+RUN pip3 install -r /app/requirements.txt
+```
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+
+* Check Python working
+
+```
+$ docker build -t my-web .
+$ docker run -it my-web:latest python3
+Python 3.6.1 (default, Oct  2 2017, 20:46:59) 
+[GCC 6.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+
+* Give something to do when it starts:
+
+```
+CMD ["python3", "/app/app.py"]
+```
+
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+]
+.right-column[
+
+* Party time:
+
+```
+$ docker build -t my-web .
+$ docker run -d -p 8000:80 my-web
+$ curl localhost:8000
+Congrats, your container is working
+$ docker logs $(docker ps -ql)
+* Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+172.17.0.1 - - [18/Jan/2018 18:15:56] "GET / HTTP/1.1" 200 -
+```
+]
+
+---
+
+.left-column[
+    ## Building Images
+### - Dockerfiles
+### - Layers
+### - Making a Dockerfile
+### - Exercises
+]
+.right-column[
+.center[
+**Exercises**
+]
+]
+
+
+---
+template: inverse
+# Docker Compose
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+]
+.right-column[
+
+* What if your containerized app needs a database?
+
+* and a message broker?
+
+* and another service?
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+]
+.right-column[
+
+* You could just run several of the Docker commands we've seen so far
+
+* That would be annoying and error prone
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+]
+.right-column[
+* Meet `docker-compose`; _you already know it_
+
+```
+version: '3'
+
+services:
+    app:
+        build: .
+        ports:
+            - 127.0.0.1:8000:80
+        command: python3 /app/app.py
+        depends_on: 
+            - db
+
+    db:
+        image: mongo
+        volumes:
+            - app_data:/data/db
+
+volumes:
+    app_data:
+```
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+]
+.right-column[
+* Basically `docker` commands in YAML
+
+* Write it in `docker-compose.yml`
+
+* Run it with `docker-compose up`
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+]
+.right-column[
+
+* Declare the version
+
+```
+version: '3'
+```
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+### - Services
+]
+.right-column[
+* Containers are defined in a `services` block.
+
+* Pre-built image:
+
+```
+    services:
+        db:
+            image: mongo
+```
+
+* Build your own
+
+```
+    services
+        app:
+            build: /dir/with/Dockerfile
+```
+ 
+* `app` and `db` will be resolvable from other containers
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+### - Services
+]
+.right-column[
+* Most compose options should be obvious now:
+
+```
+    services:
+        app:
+            build: .
+            ports:
+                - 127.0.0.1:8000:80
+            command: python3 /app/app.py
+```
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+### - Services
+]
+.right-column[
+* Other options specific to compose:
+
+```
+    services:
+        app:
+            ...
+            depends_on: 
+                - db
+```
+
+.info[
+`depends_on`: `docker-compose` will spin up `db` before `app`
+]
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+### - Services
+### - Volumes
+]
+.right-column[
+* Volumes; mount by path or by named volume:
+
+```
+    services:
+        db:
+            image: mongo
+            volumes:
+                - app_data:/data/db
+
+    volumes:
+        app_data:
+```
+
+.info[
+You can't create a named volume "lazily" in `docker-compose`; you need to define it in a `volumes` block.
+]
+
+
+]
+
+---
+
+.left-column[
+    ## Docker Compose
+### - Purpose
+### - Version
+### - Services
+### - Volumes
+### - Exercises
+]
+.right-column[
+.center[
+**Exercises**
+]
+]
+
+
+---
+template: inverse
+# Docker Machine
+
+---
+
+.left-column[
+    ## Docker Machine
+### - Purpose
+]
+.right-column[
+* `docker-machine` allows you to easily spin up docker host VMs
+
+* Create VMs for your containers on your local hypervisor or cloud provider
+
+* Useful if you want added isolation or set up a service on a remote host
+]
+
+---
+
+.left-column[
+    ## Docker Machine
+### - Purpose
+]
+.right-column[
+* Create a VM
+
+```
+docker-machine create hello-world
+```
+
+* Configure your Docker client to hit the remote Docker daemon:
+
+```
+eval $(docker-machine env hello-world)
+```
+
+* `docker` as normal now, just using another, remote, Docker daemon
+]
+
+---
+
+.left-column[
+    ## Docker Machine
+### - Purpose
+]
+.right-column[
+* VM has two network interfaces
+
+    - NAT (pull images from the webz)
+    
+    - Host-only (you'll want to expose services that are accessible from your host)
+
+* Check your VM IP:
+
+```
+docker-machine ip hello-world
+```
+]
+
+---
+
+.left-column[
+    ## Docker Machine
+### - Purpose
+]
+.right-column[
+
+* Can get a shell on the VM
+
+```
+docker-machine ssh hello-world
+```
+
+* List VMs
+
+```
+docker-machine ls
+```
+
+* Start/Stop existing VM
+
+```
+docker-machine stop hello-world
+docker-machine start hello-world
+```
+]
+
+---
+
+.left-column[
+    ## Docker Machine
+### - Purpose
+]
+.right-column[
+
+* Can spawn VMs in the cloud
+
+* The following allows you to spawn a VM in the cloud
+
+```
+docker-machine create --driver digitalocean --digitalocean-access-token=<ACCESS_TOKEN> hello-world
+```
+
+* Or with AWS
+
+```
+docker-machine create --driver amazonec2 hello-world
+```
+
+* The above will check `~/.aws/credentials` for credentials
+
+* You can also put the access keys in as CLI arguments
+
+]
+
+
+---
+template: inverse
+# Docker Swarm
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+]
+.right-column[
+
+* Group of machines (physical or virtual) that are running docker and in a cluster
+
+* Docker commands are executed on nodes within the swarm by a swarm manager
+
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+]
+.right-column[
+
+* Desired state
+
+* Extends docker-compose files
+
+]
+
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+]
+.right-column[
+* From a node
+
+```
+docker swarm init
+```
+
+* You may need to specify an `--advertise-addr` if docker can't pick an IP
+
+```
+docker swarm init --advertise-addr <IP | Interface>
+```
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+]
+.right-column[
+* Get a join token from a master node
+
+```
+docker swarm join-token (manager|worker)
+```
+
+* Use the given command on a new node
+
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+### - Deploying
+]
+.right-column[
+```
+docker stack deploy -c <COMPOSE_FILE> <STACK_NAME>
+```
+
+```
+docker stack ls
+```
+
+* NOTE: Using build with docker swarm doesn't work as you think
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+### - Deploying
+### - Compose file
+]
+.right-column[
+* Your current compose files will work off the bat
+
+* Can extend to tell swarm specific details about what you want (v3 and above)
+
+```
+    deploy:
+        resources:
+            limits:
+                cpus: '0.50'
+                memory: 50M
+            reservations:
+                cpus: '0.25'
+                memory: 20M
+        placement:
+            constraints:
+                - node.role == manager
+```
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+### - Deploying
+### - Compose file
+]
+.right-column[
+* Exposed ports are exposed on _all_ nodes in the swarm
+
+* Swarm will load balance requests to that port with all containers of that service
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+### - Deploying
+### - Compose file
+### - Overlay networks
+]
+.right-column[
+* Distributed network among multiple nodes
+
+* Allows containers on different hosts to communicate
+
+* _OPTIONAL_ IPSec encryption (Does not work with Windows)
+
+* Swarm management traffic is automatically encrypted
+]
+
+---
+
+.left-column[
+    ## Docker Swarm
+### - What is it
+### - Why
+### - Setup
+### - Deploying
+### - Compose file
+### - Overlay networks
+### - Secrets
+]
+.right-column[
+* Centrally manage secrets
+
+* Only sent to nodes / containers that need it
+
+* Encrypted at rest and transit
+
+* Typically found in `/run/secrets/` within the container
+
+```
+docker secret create my_secret secret_file.txt
+```
+]
+
+
+---
+template: inverse
+# Security
+
+---
+
+.left-column[
+    ## Security
+### - Root Shell
+]
+.right-column[
+.alert[
+Consider members of the `docker` group `root` (when daemon running)
+]
+
+* Can get a root shell if you're a member of the `docker` group
+
+* Just mount the host's `/` in a container:
+
+```
+$ docker run -v /:/hostroot/ -it alpine /bin/sh
+/ # id
+uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),11(floppy),20(dialout),26(tape),27(video)
+/ # cat /hostroot/etc/shadow
+root:$6$------------------------------------------------------------------------
+```
+
+* Authorisation plugins
+
+* SELinux
+]
+
+---
+
+.left-column[
+    ## Security
+### - Root Shell
+### - Home Auto-mount
+]
+.right-column[
+.alert[
+`docker-machine` mounts your home directory in your Docker VM by default
+]
+
+* Containers can't access your stuff
+
+* But stuff in the Docker VM could read your keys
+
+```
+$ docker-machine test
+$ docker-machine ssh test
+docker@test:~$ ls /hosthome/user/.ssh/
+```
+
+* Should only happen when using VirtualBox(/VMWare?) providers
+
+* Shouldn't mount your stuff in a cloud provider
+
+]
+
+---
+
+.left-column[
+    ## Security
+### - Root Shell
+### - Home Auto-mount
+### - Privileged mode
+]
+.right-column[
+* `--privileged` flag
+
+* All kernel capabilities
+
+* `/dev/` device access
+
+* Easy to breakout
+]
+
+---
+
+.left-column[
+    ## Security
+### - Root Shell
+### - Home Auto-mount
+### - Privileged mode
+### - Things to watch out for
+]
+.right-column[
+* Mounted volumes
+
+* UID
+
+* Kernel capabilities
+
+* `docker` group
+
+* secrets
+
+* `docker inspect` - FRIEND
+]
+
+
+---
+template: inverse
+# Thanks
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="https://remarkjs.com/remark.language.js"></script>
+    <script>
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+          highlightLanguage: 'remark',
+          highlightLines: true
+        }) ;
+    </script>
+  </body>
+</html>
